@@ -198,8 +198,9 @@ function isPalindrome(str) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let i = 0; i < str.length; i += 1) if (str[i] === letter) return i;
+  return -1;
 }
 
 /**
@@ -217,8 +218,10 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  const str = String(num);
+  for (let i = 0; i < str.length; i += 1) if (+str[i] === digit) return true;
+  return false;
 }
 
 /**
@@ -234,8 +237,16 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getSum(arr, start, end) {
+  let sum = 0;
+  for (let i = start; i <= end; i += 1) sum += arr[i];
+  return sum;
+}
+
+function getBalanceIndex(arr) {
+  for (let i = 0; i < arr.length; i += 1)
+    if (getSum(arr, 0, i - 1) === getSum(arr, i + 1, arr.length - 1)) return i;
+  return -1;
 }
 
 /**
@@ -259,8 +270,30 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function spiralTurn(arr, size, startIndex, startNum) {
+  const result = arr;
+  if (size === 1) {
+    result[startIndex][startIndex] = startNum;
+  } else if (size) {
+    let num = startNum;
+    const maxNum = startNum + (size - 1) * 4;
+    const endIndex = startIndex + size - 1;
+    for (let i = startIndex; i < endIndex; i += 1) {
+      result[startIndex][i] = num;
+      result[i][endIndex] = num + size - 1;
+      result[endIndex][i + 1] = maxNum + startIndex - i - size;
+      result[i + 1][startIndex] = maxNum + startIndex - i - 1;
+      num += 1;
+    }
+    spiralTurn(result, size - 2, startIndex + 1, maxNum);
+  }
+  return result;
+}
+
+function getSpiralMatrix(size) {
+  const arr = new Array(size);
+  for (let i = 0; i < size; i += 1) arr[i] = new Array(size);
+  return spiralTurn(arr, size, 0, 1);
 }
 
 /**
