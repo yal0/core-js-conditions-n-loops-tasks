@@ -387,8 +387,19 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  if (arr.length < 2) return arr;
+  const pivot = arr[0];
+
+  const left = [];
+  const right = [];
+
+  for (let i = 1; i < arr.length; i += 1) {
+    if (pivot > arr[i]) left.push(arr[i]);
+    else right.push(arr[i]);
+  }
+  Object.assign(arr, [...sortByAsc(left), pivot, ...sortByAsc(right)]);
+  return arr;
 }
 
 /**
@@ -442,8 +453,32 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let arr = [];
+  const str = `${number}`;
+  for (let i = 0; i < str.length; i += 1) arr.push(str[i]);
+  for (let i = arr.length - 2; i >= 0; i -= 1) {
+    const currentIndex = i;
+    const pivot = arr[i];
+    let findSwapIndex = [];
+    for (let j = i + 1; j < arr.length; j += 1) findSwapIndex.push(arr[j]);
+    findSwapIndex = findSwapIndex
+      .map((item, index) => [index + currentIndex + 1, item - pivot])
+      .filter((item) => item[1] > 0)
+      .sort((a, b) => a[1] - b[1]);
+    if (findSwapIndex[0]) {
+      [arr[i], arr[findSwapIndex[0][0]]] = [arr[findSwapIndex[0][0]], arr[i]];
+      const arrLeft = [];
+      const arrRight = [];
+      Object.assign(arrLeft, arr);
+      Object.assign(arrRight, arr);
+      arrLeft.splice(i + 1, arrLeft.length - i - 1);
+      arrRight.splice(0, i + 1);
+      arr = [...arrLeft, ...arrRight.sort((a, b) => a - b)];
+      return +arr.join('');
+    }
+  }
+  return +arr.join('');
 }
 
 module.exports = {
