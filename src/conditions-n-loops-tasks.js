@@ -162,8 +162,53 @@ function convertToRomanNumerals(num) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let result = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    switch (numberStr[i]) {
+      case '0':
+        result += 'zero';
+        break;
+      case '1':
+        result += 'one';
+        break;
+      case '2':
+        result += 'two';
+        break;
+      case '3':
+        result += 'three';
+        break;
+      case '4':
+        result += 'four';
+        break;
+      case '5':
+        result += 'five';
+        break;
+      case '6':
+        result += 'six';
+        break;
+      case '7':
+        result += 'seven';
+        break;
+      case '8':
+        result += 'eight';
+        break;
+      case '9':
+        result += 'nine';
+        break;
+      case '-':
+        result += 'minus';
+        break;
+      case '.':
+      case ',':
+        result += 'point';
+        break;
+      default:
+        break;
+    }
+    if (i < numberStr.length - 1) result += ' ';
+  }
+  return result;
 }
 
 /**
@@ -311,8 +356,21 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const size = matrix.length;
+  let i;
+  let j;
+  let k;
+  const result = new Array(size);
+  for (i = 0; i < size; i += 1) result[i] = new Array(size);
+
+  for (i = 0, k = size - 1; i < size; i += 1, k -= 1) {
+    for (j = 0; j < size; j += 1) {
+      result[j][k] = matrix[i][j];
+    }
+  }
+  Object.assign(matrix, result);
+  return matrix;
 }
 
 /**
@@ -350,8 +408,21 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  let n = iterations;
+  while (n) {
+    let start = '';
+    let end = '';
+    for (let i = 0; i < result.length; i += 2) {
+      start += result[i];
+      end += result[i + 1] ?? '';
+    }
+    result = start + end;
+    n -= 1;
+    if (result === str) n = iterations % (iterations - n);
+  }
+  return result;
 }
 
 /**
