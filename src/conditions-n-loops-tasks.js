@@ -454,9 +454,10 @@ function shuffleChar(str, iterations) {
  * @returns {number} The nearest larger number, or original number if none exists.
  */
 function getNearestBigger(number) {
-  let arr = [];
+  const arr = [];
   const str = `${number}`;
   for (let i = 0; i < str.length; i += 1) arr.push(str[i]);
+
   for (let i = arr.length - 2; i >= 0; i -= 1) {
     const currentIndex = i;
     const pivot = arr[i];
@@ -468,17 +469,12 @@ function getNearestBigger(number) {
       .sort((a, b) => a[1] - b[1]);
     if (findSwapIndex[0]) {
       [arr[i], arr[findSwapIndex[0][0]]] = [arr[findSwapIndex[0][0]], arr[i]];
-      const arrLeft = [];
-      const arrRight = [];
-      Object.assign(arrLeft, arr);
-      Object.assign(arrRight, arr);
-      arrLeft.splice(i + 1, arrLeft.length - i - 1);
-      arrRight.splice(0, i + 1);
-      arr = [...arrLeft, ...arrRight.sort((a, b) => a - b)];
-      return +arr.join('');
+      let tail = [];
+      tail = arr.splice(i + 1, arr.length - i - 1).sort((a, b) => a - b);
+      return +[...arr, ...tail].join('');
     }
   }
-  return +arr.join('');
+  return number;
 }
 
 module.exports = {
